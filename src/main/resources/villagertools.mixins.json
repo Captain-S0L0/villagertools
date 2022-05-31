@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.terriblefriends.villagertools.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+    "TradeOfferListMixin",
+    "GameMenuScreenMixin",
+    "MerchantScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
