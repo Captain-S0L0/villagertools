@@ -1,9 +1,19 @@
 package com.terriblefriends.villagertools;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.DeathScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,8 +22,50 @@ public class VillagerTools implements ModInitializer {
     public static Map<Enchantment, Boolean> enabledEnchantments = new HashMap<>();
     public static Map<Enchantment, Integer> maxEnchantLevels = new HashMap<>();
     public static boolean autoDisableOnFind = true;
-    public static boolean voidScreenSaved = false;
+    public static boolean autoOpenVoidGui = false;
     public static Screen voidScreen;
+    public static ChunkPos voidVillagerPos;
+    public static int voidVillagerId;
+
+    @Override
+    public void onInitialize() {
+        ClientTickEvents.END_CLIENT_TICK.register((client) -> {
+            if (autoOpenVoidGui && voidVillagerPos != null) {
+                if (!client.world.getChunkManager().isChunkLoaded(voidVillagerPos.x, voidVillagerPos.z)) {
+                    client.setScreen(VillagerTools.voidScreen);
+                    VillagerTools.voidVillagerPos = null;
+                    VillagerTools.voidScreen = null;
+                }
+            }
+        });
+    }
+
+    public static void setScreen(@Nullable Screen screen) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (screen == null && client.world == null) {
+            screen = new TitleScreen();
+        } else if (screen == null && client.player.isDead()) {
+            if (client.player.showsDeathScreen()) {
+                screen = new DeathScreen(null, client.world.getLevelProperties().isHardcore());
+            } else {
+                client.player.requestRespawn();
+            }
+        }
+
+        client.currentScreen = screen;
+        BufferRenderer.unbindAll();
+        if (screen != null) {
+            client.mouse.unlockCursor();
+            KeyBinding.unpressAll();
+            (screen).init(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
+            client.skipGameRender = false;
+        } else {
+            client.getSoundManager().resumeAll();
+            client.mouse.lockCursor();
+        }
+
+        client.updateWindowTitle();
+    }
 
     static {
         enabledEnchantments.put(Enchantments.AQUA_AFFINITY, true);
@@ -91,10 +143,5 @@ public class VillagerTools implements ModInitializer {
         maxEnchantLevels.put(Enchantments.POWER,5);
         maxEnchantLevels.put(Enchantments.SHARPNESS,5);
         maxEnchantLevels.put(Enchantments.SMITE,5);
-    }
-
-    @Override
-    public void onInitialize() {
-
     }
 }

@@ -30,7 +30,7 @@ public class GameMenuScreenMixin extends Screen {
             if (VillagerTools.voidScreen != null) {
                 this.client.setScreen(VillagerTools.voidScreen);
                 VillagerTools.voidScreen = null;
-                VillagerTools.voidScreenSaved = false;
+                VillagerTools.voidVillagerPos = null;
             }
         }, VillagerTools.voidScreen != null));
     }
