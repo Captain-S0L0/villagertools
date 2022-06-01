@@ -36,7 +36,8 @@ public class MerchantScreenMixin extends Screen {
             VillagerTools.voidScreen = client.currentScreen;
             VillagerTools.setScreen(null);
             if (client.crosshairTarget.getType() == HitResult.Type.ENTITY) {
-                VillagerTools.voidVillagerPos = new ChunkPos(((EntityHitResult)client.crosshairTarget).getEntity().getBlockPos());
+                //VillagerTools.voidVillagerPos = new ChunkPos(((EntityHitResult)client.crosshairTarget).getEntity().getBlockPos());
+                VillagerTools.voidVillagerPos = new ChunkPos(client.player.getBlockPos());
             }
         }));
         this.addDrawableChild(new ToggleButton(this.width-98,this.height-40, 98, 20, new LiteralText("Auto Open GUI"), (button) -> {

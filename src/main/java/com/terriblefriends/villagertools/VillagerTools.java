@@ -25,7 +25,6 @@ public class VillagerTools implements ModInitializer {
     public static boolean autoOpenVoidGui = false;
     public static Screen voidScreen;
     public static ChunkPos voidVillagerPos;
-    public static int voidVillagerId;
 
     @Override
     public void onInitialize() {
