@@ -5,9 +5,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 
 import java.util.*;
 
@@ -73,7 +71,7 @@ public class VillagerScreen extends Screen {
         Iterator level_one_iterator = level_one.iterator();
         while (level_one_iterator.hasNext()) {
             Enchantment level_one_next = (Enchantment)level_one_iterator.next();
-            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, new TranslatableText(level_one_next.getTranslationKey()), (button) -> {
+            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, Text.translatable(level_one_next.getTranslationKey()), (button) -> {
                 Boolean to = !VillagerTools.enabledEnchantments.get(button.getEnchantment());
                 button.active = to;
                 VillagerTools.enabledEnchantments.put(button.getEnchantment(), to);
@@ -85,7 +83,7 @@ public class VillagerScreen extends Screen {
         Iterator level_two_iterator = level_two.iterator();
         while (level_two_iterator.hasNext()) {
             Enchantment level_two_next = (Enchantment)level_two_iterator.next();
-            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, new TranslatableText(level_two_next.getTranslationKey()), (button) -> {
+            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, Text.translatable(level_two_next.getTranslationKey()), (button) -> {
                 Boolean to = !VillagerTools.enabledEnchantments.get(button.getEnchantment());
                 button.active = to;
                 VillagerTools.enabledEnchantments.put(button.getEnchantment(), to);
@@ -97,7 +95,7 @@ public class VillagerScreen extends Screen {
         Iterator level_three_iterator = level_three.iterator();
         while (level_three_iterator.hasNext()) {
             Enchantment level_three_next = (Enchantment)level_three_iterator.next();
-            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, new TranslatableText(level_three_next.getTranslationKey()), (button) -> {
+            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, Text.translatable(level_three_next.getTranslationKey()), (button) -> {
                 Boolean to = !VillagerTools.enabledEnchantments.get(button.getEnchantment());
                 button.active = to;
                 VillagerTools.enabledEnchantments.put(button.getEnchantment(), to);
@@ -109,7 +107,7 @@ public class VillagerScreen extends Screen {
         Iterator level_four_iterator = level_four.iterator();
         while (level_four_iterator.hasNext()) {
             Enchantment level_four_next = (Enchantment)level_four_iterator.next();
-            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, new TranslatableText(level_four_next.getTranslationKey()), (button) -> {
+            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, Text.translatable(level_four_next.getTranslationKey()), (button) -> {
                 Boolean to = !VillagerTools.enabledEnchantments.get(button.getEnchantment());
                 button.active = to;
                 VillagerTools.enabledEnchantments.put(button.getEnchantment(), to);
@@ -121,7 +119,7 @@ public class VillagerScreen extends Screen {
         Iterator level_five_iterator = level_five.iterator();
         while (level_five_iterator.hasNext()) {
             Enchantment level_five_next = (Enchantment)level_five_iterator.next();
-            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, new TranslatableText(level_five_next.getTranslationKey()), (button) -> {
+            this.addDrawableChild(new EnchantmentButton((100 * column), (25 * row), 98, 20, Text.translatable(level_five_next.getTranslationKey()), (button) -> {
                 Boolean to = !VillagerTools.enabledEnchantments.get(button.getEnchantment());
                 button.active = to;
                 VillagerTools.enabledEnchantments.put(button.getEnchantment(), to);
@@ -130,11 +128,11 @@ public class VillagerScreen extends Screen {
         }
 
 
-        this.addDrawableChild(new ToggleButton(this.width-98, this.height-20,98,20,new LiteralText("Auto Disable On Find"), (button) -> {
+        this.addDrawableChild(new ToggleButton(this.width-98, this.height-20,98,20,Text.literal("Auto Disable On Find"), (button) -> {
             VillagerTools.autoDisableOnFind = !VillagerTools.autoDisableOnFind;
             button.active = !button.active;
         }, VillagerTools.autoDisableOnFind));
-        this.addDrawableChild(new ButtonWidget(this.width-98, this.height-40,98,20,new LiteralText("Disable All"), (button) -> {
+        this.addDrawableChild(new ButtonWidget(this.width-98, this.height-40,98,20,Text.literal("Disable All"), (button) -> {
             for (Enchantment enchantment : VillagerTools.enabledEnchantments.keySet()) {
                 VillagerTools.enabledEnchantments.put(enchantment, false);
             }
@@ -144,7 +142,7 @@ public class VillagerScreen extends Screen {
                 }
             }
         }));
-        this.addDrawableChild(new ButtonWidget(this.width-98, this.height-60,98,20,new LiteralText("Enable All"), (button) -> {
+        this.addDrawableChild(new ButtonWidget(this.width-98, this.height-60,98,20,Text.literal("Enable All"), (button) -> {
             for (Enchantment enchantment : VillagerTools.enabledEnchantments.keySet()) {
                 VillagerTools.enabledEnchantments.put(enchantment, true);
             }

@@ -6,7 +6,6 @@ import com.terriblefriends.villagertools.VillagerTools;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,10 +22,10 @@ public class GameMenuScreenMixin extends Screen {
     @Inject(at=@At("TAIL"),method="Lnet/minecraft/client/gui/screen/GameMenuScreen;initWidgets()V")
 
     private void addGuiButton(CallbackInfo ci) {
-        this.addDrawableChild(new ButtonWidget(this.width-98,this.height-20,98,20,new LiteralText("Librarian Helper"), (button) -> {
-            this.client.setScreen(new VillagerScreen(new LiteralText("cheese")));
+        this.addDrawableChild(new ButtonWidget(this.width-98,this.height-20,98,20,Text.literal("Librarian Helper"), (button) -> {
+            this.client.setScreen(new VillagerScreen(Text.literal("cheese")));
         }));
-        this.addDrawableChild(new ToggleButton(this.width-98,this.height-40,98,20,new LiteralText("Open Void Trade"), (button) -> {
+        this.addDrawableChild(new ToggleButton(this.width-98,this.height-40,98,20,Text.literal("Open Void Trade"), (button) -> {
             if (VillagerTools.voidScreen != null) {
                 this.client.setScreen(VillagerTools.voidScreen);
                 VillagerTools.voidScreen = null;

@@ -10,8 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,10 +30,14 @@ public class TradeOfferListMixin {
         for(int j = 0; j < i; ++j) {
             ItemStack itemStack = buf.readItemStack();
             ItemStack itemStack2 = buf.readItemStack();
-            ItemStack itemStack3 = ItemStack.EMPTY;
-            if (buf.readBoolean()) {
-                itemStack3 = buf.readItemStack();
-            }
+            ItemStack itemStack3 = buf.readItemStack();
+            boolean bl = buf.readBoolean();
+            int k = buf.readInt();
+            int l = buf.readInt();
+            int m = buf.readInt();
+            int n = buf.readInt();
+            float f = buf.readFloat();
+            int o = buf.readInt();
 
             if (itemStack2.getItem() == Items.ENCHANTED_BOOK) {
                 Map<Enchantment, Integer> bookEnchantMap = EnchantmentHelper.get(itemStack2);
@@ -46,7 +49,7 @@ public class TradeOfferListMixin {
                     int maxEnchantLevel = VillagerTools.maxEnchantLevels.get(bookEnchantmentToCheck);
                     if (bookEnchantLevel == maxEnchantLevel && itemStack.getCount() <= 64) {
                         Messager.rawchat("!!!!!!!");
-                        Messager.chatText(new LiteralText("Max Enchantment Found! ").append(new TranslatableText(bookEnchantmentToCheck.getTranslationKey())));
+                        Messager.chatText(Text.literal("Max Enchantment Found! ").append(Text.translatable(bookEnchantmentToCheck.getTranslationKey())));
                         Messager.rawchat("!!!!!!!");
                         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ENTITY_PLAYER_LEVELUP, 1.0F));
                         if (VillagerTools.autoDisableOnFind) {
@@ -55,14 +58,6 @@ public class TradeOfferListMixin {
                     }
                 }
             }
-
-            boolean bl = buf.readBoolean();
-            int k = buf.readInt();
-            int l = buf.readInt();
-            int m = buf.readInt();
-            int n = buf.readInt();
-            float f = buf.readFloat();
-            int o = buf.readInt();
             TradeOffer tradeOffer = new TradeOffer(itemStack, itemStack3, itemStack2, k, l, m, f, o);
             if (bl) {
                 tradeOffer.disable();

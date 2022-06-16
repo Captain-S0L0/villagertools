@@ -2,40 +2,41 @@ package com.terriblefriends.villagertools;
 
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.MessageType;
-import net.minecraft.text.LiteralText;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-
-import java.util.UUID;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.Registry;
 
 public class Messager {
+    private static final MinecraftClient minecraftClient = MinecraftClient.getInstance();
+    private static final MessageType messageType = DynamicRegistryManager.BUILTIN.get().get(Registry.MESSAGE_TYPE_KEY).get(new Identifier("system"));
+
     public static void actionBar(String message){
-        MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        Text text = new TranslatableText(message);
+        Text text = Text.literal(message);
         minecraftClient.inGameHud.setOverlayMessage(text,false);
     }
     public static void rawactionBar(String message){
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        Text text = new LiteralText(message);
+        Text text = Text.literal(message);
         minecraftClient.inGameHud.setOverlayMessage(text,false);
     }
 
     public static void chat(String message){
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        Text text = new TranslatableText(message);
-        minecraftClient.inGameHud.addChatMessage(MessageType.SYSTEM,text, UUID.randomUUID());
+        Text text = Text.literal(message);
+        minecraftClient.inGameHud.onGameMessage(messageType,text);
     }
 
     public static void rawchat(String message){
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        Text text = new LiteralText(message);
-        minecraftClient.inGameHud.addChatMessage(MessageType.SYSTEM,text, UUID.randomUUID());
+        Text text =Text.literal(message);
+        minecraftClient.inGameHud.onGameMessage(messageType,text);
     }
 
     public static void chatText(Text message){
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        minecraftClient.inGameHud.addChatMessage(MessageType.SYSTEM,message, UUID.randomUUID());
+        minecraftClient.inGameHud.onGameMessage(messageType,message);
     }
 }
 
